@@ -63,7 +63,7 @@
 #include "s.h"
 
 /* screen control commands for ANSI terminals */
-#define AUTOWRAP	1
+#define AUTOWRAP	0
 #define CLEAR_ROW	"K"
 #define CLEAR_SCREEN	"2J"
 #define DELETE_CHAR	"P"

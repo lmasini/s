@@ -11,8 +11,8 @@ CFLAGS = -O2 -Wall -std=c89 -DTERMIOS
 #CC = cc
 #CFLAGS = -O
 
-s:	s.o address.o adjust.o Bman.o buffer.o commands.o \
-	keyboard.o lib.o operator.o screen.o Sman.o yank.o
+s:	s.o address.o adjust.o bman.o buffer.o commands.o \
+	keyboard.o lib.o operator.o screen.o sman.o yank.o
 	$(CC) -o s *.o
 
 install:
