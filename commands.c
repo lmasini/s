@@ -114,6 +114,9 @@
 *    k_redo()                    .. file keyboard.c
 *        Redo the most recent buffer-change command.
 *
+*    s_errmsg(char *msg, int val)                         .. file sman.c
+*        Format and print msg; wait for a key to be pressed.
+*
 *    s_finish()                    .. file Sman.c
 *        Shut down the display module.
 *
@@ -151,6 +154,7 @@ extern void do_put(), s_putmsg(), b_free(), k_finish(), s_finish();
 extern void undo(), k_redo(), adjust(), b_getmark(), address();
 extern void b_newcmd(), b_unmod(), b_setline();
 extern int b_size(), b_modified(), k_getch(), s_ismsg(), strsame(), b_insert();
+extern void s_errmsg();
 static void do_star(), do_io(), do_write(), write_lines();
 static int do_read();
 
