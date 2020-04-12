@@ -47,18 +47,18 @@
 static void reference();
 
 struct b_line {
-    char *b_text;        /* text of the line */
-    int b_id;        /* ID of the line */
+    char *b_text;           /* text of the line */
+    int b_id;               /* ID of the line */
     struct b_line *next;    /* pointer to next line */
     struct b_line *prev;    /* pointer to previous line */
 };
 
 static struct b_line
-    line0,            /* points to first and last buffer lines */
-    *ref_line;        /* recently referenced line */
+    line0,          /* points to first and last buffer lines */
+    *ref_line;      /* recently referenced line */
 
 static int
-    last_id = 0,        /* last ID assigned to a buffer line */
+    last_id = 0,    /* last ID assigned to a buffer line */
     ref_nbr;        /* number of recently referenced line */
 
 /* buf_delete - delete buffer lines */
@@ -148,14 +148,14 @@ char *s;
 {
     char *p;
 
-    if ((p = malloc((unsigned)strlen(s)+1)) != NULL) {
+    if ( (p = malloc((unsigned)strlen(s)+1)) != NULL ) {
         reference(k);
         free(ref_line->b_text);
         ref_line->b_text = strcpy(p, s);
         ref_line->b_id = ++last_id;
-        return(1);
+        return 1;
     }
-    return(0);
+    return 0;
 }
 
 /* reference - point ref_line to the n-th buffer line; update ref_nbr */

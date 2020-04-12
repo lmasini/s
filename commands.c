@@ -76,6 +76,9 @@
 *    int b_modified()                .. file Bman.c
 *        Tell if buffer contents differ from the external file.
 *
+*    int b_nomemory()                                     .. file bman.c
+*        Returne true if the buffer module ran out of memory.
+*
 *    b_setcur(line, pos)                .. file Bman.c
 *    int line, pos;
 *        Set the cursor to the indicated location.
@@ -108,8 +111,11 @@
 *    k_finish()                    .. file keyboard.c
 *        Close down the keyboard manager.
 *
-*    int k_getch()                    .. file keyboard.c
+*    int k_getch()                                    .. file keyboard.c
 *        Return the next character of the command.
+*
+*    int k_keyin()                                    .. file keyboard.c
+*        Get a character from the keyboard.
 *
 *    k_redo()                    .. file keyboard.c
 *        Redo the most recent buffer-change command.
@@ -153,7 +159,7 @@ extern void k_donext(), s_savemsg(), b_delete(), b_setmark();
 extern void do_put(), s_putmsg(), b_free(), k_finish(), s_finish();
 extern void undo(), k_redo(), adjust(), b_getmark(), address();
 extern void b_newcmd(), b_unmod(), b_setline();
-extern int b_size(), b_modified(), k_getch(), s_ismsg(), strsame(), b_insert();
+extern int b_size(), b_modified(), k_getch(), k_keyin(), s_ismsg(), strsame(), b_insert(), b_nomemory();
 extern void s_errmsg();
 static void do_star(), do_io(), do_write(), write_lines();
 static int do_read();
@@ -485,9 +491,9 @@ int line;
 
     rewind(fp);
     /* copy the file to the buffer */
-    for (i = line; fgets(text, MAXTEXT, fp) != NULL; ++i) {
+    for ( i = line; fgets(text, MAXTEXT, fp) != NULL; ++i ) {
         text[strlen(text)-1] = '\0';    /* trim off the newline */
-        if (b_insert(i, text) == 0) {
+        if ( b_insert(i, text) == 0 ) {
             s_errmsg("Out of memory on line %d", i);
             break;
         } /*i*/
@@ -576,6 +582,10 @@ char *file;
     } else if (from > 1 || to < b_size()) {
         s_putmsg("Write partial buffer to current file? ");
         if (k_getch() != 'y')
+            return;
+    } else if ( b_nomemory() ) {
+        s_putmsg("The editor ran out of memory! Do you want to save anyway? ");
+        if (k_keyin() != 'y') /* Do not use k_getch(), use k_keyin() to ignore buffered character */
             return;
     }
 
